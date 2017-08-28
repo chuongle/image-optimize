@@ -14,13 +14,18 @@ class App extends Component {
     super(props);
     
     this.state = {
-      worker: Worker,
-      loader: false
+      optimized: false,
+      disabled: true,
+      formData: {},
     }
+
+    this.onChange = this.onChange.bind(this)
   }
 
-  onSubmit({formData}) {
-    this.setState({loader:true})
+  onSubmit({ formData }) {
+    this.setState({
+      optimized: true
+    })
     const { images } = formData;
     images.forEach((image, index) => {
       const fileName = image.substring(image.indexOf('=')+1, image.lastIndexOf(';'));
@@ -56,12 +61,30 @@ class App extends Component {
     },1000)
   }
 
+  onChange({ formData }) {
+    this.setState({
+      disabled: false,
+      formData,
+    });
+  }
+
   render() {
     return (
       <div className="wrapper">
-        <Form schema={schema}
-          onSubmit={this.onSubmit.bind(this)} />
-        {this.state.loader ? <div className="loader"></div> : null}
+        <Form 
+          schema={schema} 
+          formData={this.state.formData}
+          onChange={(formData) => this.onChange(formData)}
+          onSubmit={(formData) => this.onSubmit(formData)}
+          >
+            <input
+              type="submit"
+              value="Submit"
+              className="btn btn-info"
+              disabled={this.state.disabled}
+              />
+        </Form>
+        { this.state.optimized ? <h3>Downloading...</h3> : null}
       </div>
     );
   }

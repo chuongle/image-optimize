@@ -4,8 +4,3 @@
   position: relative;
   padding: 60px 30px;
 }
-.loader {
-  width: 425px;
-  height: 240px;
-  background: url('./woopah.gif') center no-repeat;
-}
